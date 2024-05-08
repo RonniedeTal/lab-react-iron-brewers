@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 function AddBeerPage() {
   // State variables to store the values of the form inputs. You can leave these as they are.
   const [name, setName] = useState("");
@@ -20,7 +21,34 @@ function AddBeerPage() {
   const handleBrewersTips = (e) => setBrewersTips(e.target.value);
   const handleAttenuationLevel = (e) => setAttenuationLevel(e.target.value);
   const handleContributedBy = (e) => setContributedBy(e.target.value);
+  const navigate=useNavigate()
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
+    const newBeer={
+      name,
+      tagline,
+      description,
+      imageUrl,
+      firstBrewed,
+      brewersTips,
+      attenuationLevel,
+      contributedBy
+    }
 
+
+
+
+
+
+try {
+  const response=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/new`,newBeer)
+  navigate("/beers")
+  console.log(response);
+} catch (error) {
+  console.log(error);
+}
+
+  }
 
 
   // TASK:
@@ -33,8 +61,9 @@ function AddBeerPage() {
   // Structure and the content of the page showing the form for adding a new beer. You can leave this as it is.
   return (
     <>
+
       <div className="d-inline-flex flex-column w-100 p-4">
-        <form>
+        <form onSubmit={handleSubmit}>
           <label>Name</label>
           <input
             className="form-control mb-4"
